@@ -1,78 +1,88 @@
+"use client";
+
+import { useRef, useState, useEffect } from "react";
+
 export default function FeaturedGrid() {
   const featured = [
-    {
-      name: "Acapulco Luxury Apartment",
-      desc: "Apartment on the beach in Acapulco",
-      reviews: "5.0 ★ (1 review)",
-      status: "Active",
-    },
-    {
-      name: "Kokoro Wellness",
-      desc: "State of the art fitness and wellness center focusing on peak performance",
-      reviews: "5.0 ★ (1 review)",
-      status: "Active",
-    },
-    {
-      name: "Hand To Shoulder Austin",
-      desc: "Austin’s premier hand, wrist, elbow and shoulder specialists",
-      reviews: "5.0 ★ (1 review)",
-      status: "Active",
-    },
-    {
-      name: "Kyle B",
-      desc: "Business and leadership advisor, serial entrepreneur with a number of successes",
-      reviews: "5.0 ★ (1 review)",
-      status: "Active",
-    },
-    {
-      name: "Stephen Kwame Ansong",
-      desc: "As a dedicated fitness coach, I specialize in personalized wellness programs",
-      reviews: "5.0 ★ (2 reviews)",
-      status: "Inactive",
-    },
+    { name: "Acapulco Luxury Apartment", desc: "Apartment on the beach in Acapulco", reviews: "5.0 ★ (1 review)", status: "Active" },
+    { name: "Kokoro Wellness", desc: "State of the art fitness and wellness center focusing on peak performance", reviews: "5.0 ★ (1 review)", status: "Active" },
+    { name: "Hand To Shoulder Austin", desc: "Austin’s premier hand, wrist, elbow and shoulder specialists", reviews: "5.0 ★ (1 review)", status: "Active" },
+    { name: "Kyle B", desc: "Business and leadership advisor, serial entrepreneur with a number of successes", reviews: "5.0 ★ (1 review)", status: "Active" },
+    { name: "Stephen Kwame Ansong", desc: "As a dedicated fitness coach, I specialize in personalized wellness programs", reviews: "5.0 ★ (2 reviews)", status: "Inactive" },
   ];
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  // Track the active card as user scrolls
+  const handleScroll = () => {
+    if (!scrollRef.current) return;
+    const scrollLeft = scrollRef.current.scrollLeft;
+    const cardWidth = scrollRef.current.firstChild
+      ? (scrollRef.current.firstChild as HTMLDivElement).clientWidth + 16 // 16px gap
+      : 0;
+    const index = Math.round(scrollLeft / cardWidth);
+    setActiveIndex(index);
+  };
 
   return (
     <section className="py-12 sm:py-16 lg:py-20 bg-[#f7f9fc]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
+
+        {/* Desktop Grid */}
+        <div className="hidden sm:grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
           {featured.map((item, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-2xl p-4 sm:p-5 shadow-md cursor-pointer transition-all duration-300 ease-out
-              hover:-translate-y-1 hover:shadow-xl hover:ring-1 hover:ring-cyan-200 flex flex-col"
-            >
-              {/* Top */}
+            <div key={index} className="bg-white rounded-2xl p-4 sm:p-5 shadow-md cursor-pointer transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:ring-1 hover:ring-cyan-200 flex flex-col">
               <div className="flex items-center gap-2 sm:gap-3 mb-3">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-200 flex-shrink-0" />
-                <span className="text-[10px] sm:text-xs bg-cyan-100 text-cyan-700 px-2 py-1 rounded-full whitespace-nowrap">
-                  Featured
-                </span>
+                <span className="text-[10px] sm:text-xs bg-cyan-100 text-cyan-700 px-2 py-1 rounded-full whitespace-nowrap">Featured</span>
               </div>
-
-              {/* Content */}
-              <h3 className="font-semibold text-sm sm:text-base text-gray-900 leading-snug">
-                {item.name}
-              </h3>
-
-              <p className="text-[10px] sm:text-xs text-gray-500 mt-1 line-clamp-3">
-                {item.desc}
-              </p>
-
+              <h3 className="font-semibold text-sm sm:text-base text-gray-900 leading-snug">{item.name}</h3>
+              <p className="text-[10px] sm:text-xs text-gray-500 mt-1 line-clamp-3">{item.desc}</p>
               <p className="text-[10px] sm:text-xs text-gray-600 mt-2">{item.reviews}</p>
-
-              {/* Status */}
               <div className="flex items-center gap-2 mt-3 text-[10px] sm:text-xs">
-                <span
-                  className={`w-2 h-2 rounded-full ${
-                    item.status === "Active" ? "bg-teal-500" : "bg-gray-400"
-                  }`}
-                />
+                <span className={`w-2 h-2 rounded-full ${item.status === "Active" ? "bg-teal-500" : "bg-gray-400"}`} />
                 <span className="text-gray-600">{item.status}</span>
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Mobile Carousel */}
+        <div className="sm:hidden mt-4">
+          <div
+            ref={scrollRef}
+            className="flex gap-4 overflow-x-auto snap-x snap-mandatory px-2"
+            onScroll={handleScroll}
+          >
+            {featured.map((item, index) => (
+              <div key={index} className="snap-start min-w-[220px] bg-white rounded-2xl p-4 shadow-md cursor-pointer transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:ring-1 hover:ring-cyan-200 flex-shrink-0 flex flex-col">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0" />
+                  <span className="text-xs bg-cyan-100 text-cyan-700 px-2 py-1 rounded-full whitespace-nowrap">Featured</span>
+                </div>
+                <h3 className="font-semibold text-sm text-gray-900 leading-snug">{item.name}</h3>
+                <p className="text-xs text-gray-500 mt-1 line-clamp-3">{item.desc}</p>
+                <p className="text-xs text-gray-600 mt-2">{item.reviews}</p>
+                <div className="flex items-center gap-2 mt-3 text-xs">
+                  <span className={`w-2 h-2 rounded-full ${item.status === "Active" ? "bg-teal-500" : "bg-gray-400"}`} />
+                  <span className="text-gray-600">{item.status}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Pagination Dots */}
+          <div className="flex justify-center gap-2 mt-3">
+            {featured.map((_, index) => (
+              <span
+                key={index}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  activeIndex === index ? "bg-blue-500" : "bg-gray-300"
+                }`}
+              />
+            ))}
+          </div>
         </div>
 
         {/* CTA */}
@@ -81,7 +91,9 @@ export default function FeaturedGrid() {
             See All Featured Centers & Wellness Professionals
           </button>
         </div>
+
       </div>
     </section>
   );
 }
+
