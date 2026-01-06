@@ -1,0 +1,66 @@
+/* CustomButton.module.css */
+
+/* ---------------- Base Button ---------------- */
+.button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.1s, filter 0.1s;
+  z-index: 10;
+  background-color: transparent; /* default transparent, can override */
+}
+
+/* ---------------- Colors ---------------- */
+.yellow {
+  background-color: #facc15;
+  color: #000;
+}
+
+.red {
+  background-color: #ef4444;
+  color: #fff;
+}
+
+.blue {
+  background-color: #3b82f6;
+  color: #fff;
+}
+
+/* ---------------- Tap / Active ---------------- */
+.active {
+  transform: scale(0.95);
+  filter: brightness(85%);
+}
+
+/* ---------------- Hover for Desktop ---------------- */
+.button:hover {
+  filter: brightness(95%);
+}
+
+/* ---------------- Special: Green Top & Bottom Border ---------------- */
+.borderTopBottomGreen {
+  border-top: 5px solid #22c55e;    /* green top border */
+  border-bottom: 5px solid #22c55e; /* green bottom border */
+  border-left: none;
+  border-right: none;
+  background-color: transparent;    /* keep background transparent */
+  color: #22c55e;                  /* text color green */
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+
+
+/* Add underline below text with padding */
+.borderTopBottomGreen::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 5px; /* distance from bottom border */
+  width: 100%;
+  height: 4px; /* thickness of underline */
+  background-color: #22c55e; /* green underline */
+}

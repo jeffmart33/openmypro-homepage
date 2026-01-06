@@ -2,6 +2,8 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
+import CustomButton from "@/components/CustomButton"; // adjust path if needed
+
 
 export default function FeaturedGrid() {
   const featured = [
@@ -142,12 +144,18 @@ export default function FeaturedGrid() {
 
         {/* CTA Button */}
         <div className="flex justify-center mt-8 sm:mt-10 lg:mt-12">
-          <button
-            onClick={() => alert("Button is clickable")}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-semibold text-center"
-          >
-            See All Featured Centers & Wellness Professionals
-          </button>
+        <div className="flex justify-center mt-8 sm:mt-10 lg:mt-12">
+  <CustomButton
+    color="blue"
+    alertText="See All Featured Centers & Wellness Professionals clicked!"
+    className="px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-semibold text-center bg-blue-600 hover:bg-blue-700 text-white"
+  >
+    See All Featured Centers & Wellness Professionals
+  </CustomButton>
+</div>
+
+
+
         </div>
 
       </div>

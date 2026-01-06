@@ -1,7 +1,9 @@
 "use client";
-
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
+import CustomButton from "@/components/CustomButton";
+
+
 
 /* ---------------- TYPES ---------------- */
 type Slide = {
@@ -72,6 +74,9 @@ const slides: Slide[] = [
 /* ---------------- COMPONENT ---------------- */
 export default function TopCarousel() {
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const [mounted, setMounted] = useState(false);
+useEffect(() => setMounted(true), []);
+
   const [activeIndex, setActiveIndex] = useState(0);
   const [imgIndex, setImgIndex] = useState(0);
   const cardWidth = 336;
@@ -135,19 +140,21 @@ export default function TopCarousel() {
             ref={scrollRef}
             className="flex gap-4 overflow-x-hidden scroll-smooth px-2"
           >
-            {slides.map((slide, i) => {
-              let offset = 0;
-              if (i === 1) offset = 2;
-              if (i === 2) offset = 1;
+           {slides.map((slide, i) => {
+  let offset = 0;
+  if (i === 1) offset = 2;
+  if (i === 2) offset = 1;
 
-              return (
-                <Card
-                  key={i}
-                  slide={slide}
-                  imgIndex={(imgIndex + offset) % 3}
-                />
-              );
-            })}
+  return (
+    <Card
+      key={i}
+      slide={slide}
+      imgIndex={(imgIndex + offset) % 3}
+      mounted={mounted} // ← pass it here
+    />
+  );
+})}
+
           </div>
 
           <button
@@ -162,20 +169,21 @@ export default function TopCarousel() {
         </div>
 
         {/* CTA INSIDE CONTAINER */}
-        <div className="text-center mt-16">
-          <h3 className="text-xl font-medium text-gray-800 mb-6">
-            Ready to elevate your travel experience?
-          </h3>
+       <div className="text-center mt-16">
+  <h3 className="text-xl font-medium text-gray-800 mb-6">
+    Ready to elevate your travel experience?
+  </h3>
 
-          <button
-            onClick={() => alert("Button is clicked")}
-            className="inline-flex items-center gap-3 px-10 py-5 rounded-2xl
-            text-white text-lg font-semibold
-            bg-gradient-to-r from-cyan-500 to-blue-600
-            shadow-lg hover:opacity-90 active:scale-95 transition"
-          >
-            ✈ Explore All Jets
-          </button>
+  {mounted && (
+    <CustomButton
+      color="blue"
+      alertText="Explore All Jets clicked!"
+      className="inline-flex items-center gap-3 px-10 py-5 rounded-2xl text-lg font-semibold shadow-lg bg-gradient-to-r from-cyan-500 to-blue-600"
+    >
+      ✈ Explore All Jets
+    </CustomButton>
+  )}
+
         </div>
       </div>
     </section>
@@ -183,9 +191,18 @@ export default function TopCarousel() {
 }
 
 /* ---------------- CARD ---------------- */
-function Card({ slide, imgIndex }: { slide: Slide; imgIndex: number }) {
+function Card({
+  slide,
+  imgIndex,
+  mounted, // pass this from parent
+}: {
+  slide: Slide;
+  imgIndex: number;
+  mounted: boolean;
+}) {
   return (
     <div className="w-[320px] flex-shrink-0 bg-white rounded-2xl overflow-hidden shadow-lg">
+      
       {/* IMAGE */}
       <div className="relative h-56">
         {slide.images.map((img, i) => (
@@ -248,14 +265,16 @@ function Card({ slide, imgIndex }: { slide: Slide; imgIndex: number }) {
           <strong className="text-gray-900">{slide.rent}</strong>
         </div>
 
-        <button
-          onClick={() => alert("Button is clicked")}
-          className="mt-4 w-full py-3 rounded-xl font-semibold text-white
-          bg-gradient-to-r from-blue-500 to-purple-500
-          hover:opacity-90 active:scale-95 transition"
-        >
-          📅 Book Now →
-        </button>
+        {/* Only CustomButton is conditional */}
+        {mounted && (
+          <CustomButton
+            color="blue"
+            alertText={`Book Now clicked for ${slide.name}`}
+            className="mt-4 w-full py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-500"
+          >
+            📅 Book Now →
+          </CustomButton>
+        )}
       </div>
     </div>
   );

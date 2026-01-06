@@ -2,6 +2,8 @@
 
 import { useRef } from "react";
 import Image from "next/image";
+import CustomButton from "@/components/CustomButton"; // adjust path if needed
+
 
 const pros = [
   {
@@ -124,12 +126,15 @@ export default function ProCarousel() {
                       </span>
                     </div>
 
-                    <button
-                      onClick={() => handleInstantBook(pro.name)}
-                      className="mt-4 w-full bg-gradient-to-r from-blue-600 to-cyan-500 py-2.5 rounded-xl text-sm font-semibold text-white"
-                    >
-                      Instant Book
-                    </button>
+                    <CustomButton
+  color="blue"
+  alertText={`Instant Book clicked for ${pro.name}`}
+  className="mt-4 w-full bg-gradient-to-r from-blue-600 to-cyan-500 py-2.5 rounded-xl text-sm font-semibold text-white"
+>
+  Instant Book
+</CustomButton>
+
+
                   </div>
                 </div>
               </div>
