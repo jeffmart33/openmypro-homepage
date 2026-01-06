@@ -1,25 +1,56 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
+import Image from "next/image";
 
 export default function FeaturedGrid() {
   const featured = [
-    { name: "Acapulco Luxury Apartment", desc: "Apartment on the beach in Acapulco", reviews: "5.0 ★ (1 review)", status: "Active" },
-    { name: "Kokoro Wellness", desc: "State of the art fitness and wellness center focusing on peak performance", reviews: "5.0 ★ (1 review)", status: "Active" },
-    { name: "Hand To Shoulder Austin", desc: "Austin’s premier hand, wrist, elbow and shoulder specialists", reviews: "5.0 ★ (1 review)", status: "Active" },
-    { name: "Kyle B", desc: "Business and leadership advisor, serial entrepreneur with a number of successes", reviews: "5.0 ★ (1 review)", status: "Active" },
-    { name: "Stephen Kwame Ansong", desc: "As a dedicated fitness coach, I specialize in personalized wellness programs", reviews: "5.0 ★ (2 reviews)", status: "Inactive" },
+    {
+      name: "Acapulco Luxury Apartment",
+      desc: "Apartment on the beach in Acapulco",
+      reviews: "5.0 ★ (1 review)",
+      status: "Active",
+      image: "/images/image1.jpg",
+    },
+    {
+      name: "Kokoro Wellness",
+      desc: "State of the art fitness and wellness center focusing on peak performance",
+      reviews: "5.0 ★ (1 review)",
+      status: "Active",
+      image: "/images/image2.jpg",
+    },
+    {
+      name: "Hand To Shoulder Austin",
+      desc: "Austin’s premier hand, wrist, elbow and shoulder specialists",
+      reviews: "5.0 ★ (1 review)",
+      status: "Active",
+      image: "/images/image3.jpg",
+    },
+    {
+      name: "Kyle B",
+      desc: "Business and leadership advisor, serial entrepreneur with a number of successes",
+      reviews: "5.0 ★ (1 review)",
+      status: "Active",
+      image: "/images/image4.jpg",
+    },
+    {
+      name: "Stephen Kwame Ansong",
+      desc: "As a dedicated fitness coach, I specialize in personalized wellness programs",
+      reviews: "5.0 ★ (2 reviews)",
+      status: "Inactive",
+      image: "/images/image6.jpg",
+    },
   ];
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Track the active card as user scrolls
+  // Track active card for mobile pagination dots
   const handleScroll = () => {
     if (!scrollRef.current) return;
     const scrollLeft = scrollRef.current.scrollLeft;
     const cardWidth = scrollRef.current.firstChild
-      ? (scrollRef.current.firstChild as HTMLDivElement).clientWidth + 16 // 16px gap
+      ? (scrollRef.current.firstChild as HTMLDivElement).clientWidth + 16
       : 0;
     const index = Math.round(scrollLeft / cardWidth);
     setActiveIndex(index);
@@ -32,9 +63,21 @@ export default function FeaturedGrid() {
         {/* Desktop Grid */}
         <div className="hidden sm:grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
           {featured.map((item, index) => (
-            <div key={index} className="bg-white rounded-2xl p-4 sm:p-5 shadow-md cursor-pointer transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:ring-1 hover:ring-cyan-200 flex flex-col">
+            <div
+              key={index}
+              onClick={() => alert(`${item.name} card clicked`)}
+              className="bg-white rounded-2xl p-4 sm:p-5 shadow-md cursor-pointer transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:ring-1 hover:ring-cyan-200 flex flex-col"
+            >
               <div className="flex items-center gap-2 sm:gap-3 mb-3">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-200 flex-shrink-0" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden flex-shrink-0">
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    width={48}
+                    height={48}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
                 <span className="text-[10px] sm:text-xs bg-cyan-100 text-cyan-700 px-2 py-1 rounded-full whitespace-nowrap">Featured</span>
               </div>
               <h3 className="font-semibold text-sm sm:text-base text-gray-900 leading-snug">{item.name}</h3>
@@ -56,9 +99,21 @@ export default function FeaturedGrid() {
             onScroll={handleScroll}
           >
             {featured.map((item, index) => (
-              <div key={index} className="snap-start min-w-[220px] bg-white rounded-2xl p-4 shadow-md cursor-pointer transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:ring-1 hover:ring-cyan-200 flex-shrink-0 flex flex-col">
+              <div
+                key={index}
+                onClick={() => alert(`${item.name} card clicked`)}
+                className="snap-start min-w-[220px] bg-white rounded-2xl p-4 shadow-md cursor-pointer transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:ring-1 hover:ring-cyan-200 flex-shrink-0 flex flex-col"
+              >
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0" />
+                  <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      width={40}
+                      height={40}
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
                   <span className="text-xs bg-cyan-100 text-cyan-700 px-2 py-1 rounded-full whitespace-nowrap">Featured</span>
                 </div>
                 <h3 className="font-semibold text-sm text-gray-900 leading-snug">{item.name}</h3>
@@ -85,9 +140,12 @@ export default function FeaturedGrid() {
           </div>
         </div>
 
-        {/* CTA */}
+        {/* CTA Button */}
         <div className="flex justify-center mt-8 sm:mt-10 lg:mt-12">
-          <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-semibold text-center">
+          <button
+            onClick={() => alert("Button is clickable")}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-semibold text-center"
+          >
             See All Featured Centers & Wellness Professionals
           </button>
         </div>
@@ -96,4 +154,3 @@ export default function FeaturedGrid() {
     </section>
   );
 }
-

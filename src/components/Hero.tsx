@@ -1,3 +1,5 @@
+"use client";
+
 export default function Hero() {
   return (
     <section className="w-full flex flex-col items-center text-center px-6 pt-16 pb-10">
@@ -26,6 +28,14 @@ export default function Hero() {
         </span>
         <span className="w-2 h-2 bg-green-500 rounded-full" />
       </div>
+
+      {/* See All (smaller text, bold, padded, green underline) */}
+      <button
+        onClick={() => alert("See all professionals")}
+        className="mt-6 text-green-500 font-bold text-base border-b-2 border-green-500 bg-transparent px-6 py-3 hover:text-green-600 transition"
+      >
+        See All
+      </button>
 
       <p className="text-sm text-gray-500 mt-2">
         Professionals accepting clients right now!
