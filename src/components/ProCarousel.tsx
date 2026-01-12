@@ -74,20 +74,16 @@ export default function ProCarousel() {
           {/* Left & Right Arrows */}
           <button
             onClick={() => scroll("left")}
-            className="flex absolute left-2 sm:left-0 top-1/2 -translate-y-1/2 z-10
-                       bg-white/90 backdrop-blur shadow-lg rounded-full
-                       w-8 h-8 sm:w-10 sm:h-10
-                       items-center justify-center"
+            className="flex absolute left-2 sm:left-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 backdrop-blur shadow-lg rounded-full w-8 h-8 sm:w-10 sm:h-10 items-center justify-center"
+
           >
             ←
           </button>
 
           <button
             onClick={() => scroll("right")}
-            className="flex absolute right-2 sm:right-0 top-1/2 -translate-y-1/2 z-10
-                       bg-white/90 backdrop-blur shadow-lg rounded-full
-                       w-8 h-8 sm:w-10 sm:h-10
-                       items-center justify-center"
+            className="flex absolute right-2 sm:right-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 backdrop-blur shadow-lg rounded-full w-8 h-8 sm:w-10 sm:h-10 items-center justify-center"
+
           >
             →
           </button>
@@ -99,9 +95,11 @@ export default function ProCarousel() {
           >
             {pros.map((pro, index) => (
               <div
-                key={index}
-                className="w-64 sm:w-72 md:w-80 lg:w-72 flex-shrink-0 relative rounded-2xl shadow-xl cursor-pointer hover:translate-y-[-2px] transition-all duration-300 snap-start overflow-hidden"
-              >
+  key={index}
+  onClick={() => alert(`Card clicked for ${pro.name}`)}
+  className="w-64 sm:w-72 md:w-80 lg:w-72 flex-shrink-0 relative rounded-2xl shadow-xl cursor-pointer hover:translate-y-[-2px] transition-all duration-300 snap-start overflow-hidden"
+>
+
                 {/* Card image container */}
                 <div className="relative h-64 w-full">
                   <Image
@@ -128,9 +126,11 @@ export default function ProCarousel() {
 
                     <CustomButton
   color="blue"
-  alertText={`Instant Book clicked for ${pro.name}`}
-  className="mt-4 w-full bg-gradient-to-r from-blue-600 to-cyan-500 py-2.5 rounded-xl text-sm font-semibold text-white"
+  alertText={`Book Now clicked for ${pro.name}`} // ✅ FIXED
+  onClick={(e) => e.stopPropagation()}
+  className="mt-4 w-full py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-500"
 >
+
   Instant Book
 </CustomButton>
 
@@ -145,7 +145,7 @@ export default function ProCarousel() {
         {/* Featured Heading */}
         <div className="text-center mt-15 mb-6 px-2 sm:px-0">
           <div className="flex justify-center mb-2">
-            <span className="text-xl font-bold text-green-700">✦</span>
+            <span className="text-7xl font-bold text-green-700">✦</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-semibold text-gray-900">
             Featured
@@ -154,7 +154,7 @@ export default function ProCarousel() {
             Discover highly-rated professionals ready to provide expert care,
             just a click away!
           </p>
-          <p className="text-sm text-cyan-600 mt-1">
+          <p className="text-sm font-bold text-green-700 mt-1">
             Trusted by thousands of clients.
           </p>
         </div>

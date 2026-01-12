@@ -129,9 +129,8 @@ useEffect(() => setMounted(true), []);
           <button
             onClick={() => handleArrow("left")}
             disabled={activeIndex === 0}
-            className="absolute -left-5 top-1/2 -translate-y-1/2 z-10
-            bg-white w-10 h-10 rounded-full shadow flex items-center justify-center
-            hover:scale-110 transition disabled:opacity-30"
+            className="absolute -left-5 top-1/2 -translate-y-1/2 z-10 bg-white w-10 h-10 rounded-full shadow flex items-center justify-center hover:scale-110 transition disabled:opacity-30"
+
           >
             ←
           </button>
@@ -160,9 +159,8 @@ useEffect(() => setMounted(true), []);
           <button
             onClick={() => handleArrow("right")}
             disabled={activeIndex === slides.length - 1}
-            className="absolute -right-5 top-1/2 -translate-y-1/2 z-10
-            bg-white w-10 h-10 rounded-full shadow flex items-center justify-center
-            hover:scale-110 transition disabled:opacity-30"
+            className="absolute -right-5 top-1/2 -translate-y-1/2 z-10 bg-white w-10 h-10 rounded-full shadow flex items-center justify-center hover:scale-110 transition disabled:opacity-30"
+
           >
             →
           </button>
@@ -201,7 +199,11 @@ function Card({
   mounted: boolean;
 }) {
   return (
-    <div className="w-[320px] flex-shrink-0 bg-white rounded-2xl overflow-hidden shadow-lg">
+    <div
+  onClick={() => alert(`Card clicked for ${slide.name}`)}
+  className="w-[320px] flex-shrink-0 bg-white rounded-2xl overflow-hidden shadow-lg cursor-pointer hover:-translate-y-1 transition-transform"
+>
+
       
       {/* IMAGE */}
       <div className="relative h-56">
@@ -268,10 +270,12 @@ function Card({
         {/* Only CustomButton is conditional */}
         {mounted && (
           <CustomButton
-            color="blue"
-            alertText={`Book Now clicked for ${slide.name}`}
-            className="mt-4 w-full py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-500"
-          >
+  color="blue"
+  alertText={`Book Now clicked for ${slide.name}`}
+  onClick={(e) => e.stopPropagation()}
+  className="mt-4 w-full py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-500"
+>
+
             📅 Book Now →
           </CustomButton>
         )}

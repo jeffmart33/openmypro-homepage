@@ -148,7 +148,7 @@ export default function FeaturedGrid() {
   <CustomButton
     color="blue"
     alertText="See All Featured Centers & Wellness Professionals clicked!"
-    className="px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-semibold text-center bg-blue-600 hover:bg-blue-700 text-white"
+className="px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-semibold text-center text-white bg-gradient-to-r from-emerald-700 via-teal-600 to-blue-800 hover:from-emerald-800 hover:via-teal-700 hover:to-blue-900 shadow-lg"
   >
     See All Featured Centers & Wellness Professionals
   </CustomButton>

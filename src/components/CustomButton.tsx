@@ -8,8 +8,9 @@ type CustomButtonProps = {
   color?: "yellow" | "red" | "blue"; // only used if no className
   alertText?: string;
   className?: string; // custom Tailwind styles
-  onClick?: () => void;
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void; // <-- change here
 };
+
 
 export default function CustomButton({
   children,
@@ -20,11 +21,12 @@ export default function CustomButton({
 }: CustomButtonProps) {
   const [active, setActive] = useState(false);
 
-  const handleClick = (e: MouseEvent<HTMLButtonElement> | TouchEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    if (alertText) alert(alertText);
-    if (onClick) onClick();
-  };
+ const handleClick = (e: MouseEvent<HTMLButtonElement> | TouchEvent<HTMLButtonElement>) => {
+  e.preventDefault();
+  if (alertText) alert(alertText);
+  if (onClick) onClick(e as MouseEvent<HTMLButtonElement>); // cast to MouseEvent
+};
+
 
   // If a custom className is provided, ignore the module color
   const colorClass = className ? "" : styles[color];
