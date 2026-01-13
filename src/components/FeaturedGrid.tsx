@@ -2,11 +2,18 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
-import CustomButton from "@/components/CustomButton"; // adjust path if needed
+import CustomButton from "@/components/CustomButton";
 
+type FeaturedItem = {
+  name: string;
+  desc: string;
+  reviews: string;
+  status: "Active" | "Inactive";
+  image: string;
+};
 
 export default function FeaturedGrid() {
-  const featured = [
+  const featured: FeaturedItem[] = [
     {
       name: "Acapulco Luxury Apartment",
       desc: "Apartment on the beach in Acapulco",
@@ -47,7 +54,6 @@ export default function FeaturedGrid() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Track active card for mobile pagination dots
   const handleScroll = () => {
     if (!scrollRef.current) return;
     const scrollLeft = scrollRef.current.scrollLeft;
@@ -61,7 +67,6 @@ export default function FeaturedGrid() {
   return (
     <section className="py-12 sm:py-16 lg:py-20 bg-[#f7f9fc]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
         {/* Desktop Grid */}
         <div className="hidden sm:grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
           {featured.map((item, index) => (
@@ -80,13 +85,19 @@ export default function FeaturedGrid() {
                     className="object-cover w-full h-full"
                   />
                 </div>
-                <span className="text-[10px] sm:text-xs bg-cyan-100 text-cyan-700 px-2 py-1 rounded-full whitespace-nowrap">Featured</span>
+                <span className="text-[10px] sm:text-xs bg-cyan-100 text-cyan-700 px-2 py-1 rounded-full whitespace-nowrap">
+                  Featured
+                </span>
               </div>
               <h3 className="font-semibold text-sm sm:text-base text-gray-900 leading-snug">{item.name}</h3>
               <p className="text-[10px] sm:text-xs text-gray-500 mt-1 line-clamp-3">{item.desc}</p>
               <p className="text-[10px] sm:text-xs text-gray-600 mt-2">{item.reviews}</p>
               <div className="flex items-center gap-2 mt-3 text-[10px] sm:text-xs">
-                <span className={`w-2 h-2 rounded-full ${item.status === "Active" ? "bg-teal-500" : "bg-gray-400"}`} />
+                <span
+                  className={`w-2 h-2 rounded-full ${
+                    item.status === "Active" ? "bg-teal-500" : "bg-gray-400"
+                  }`}
+                />
                 <span className="text-gray-600">{item.status}</span>
               </div>
             </div>
@@ -116,13 +127,19 @@ export default function FeaturedGrid() {
                       className="object-cover w-full h-full"
                     />
                   </div>
-                  <span className="text-xs bg-cyan-100 text-cyan-700 px-2 py-1 rounded-full whitespace-nowrap">Featured</span>
+                  <span className="text-xs bg-cyan-100 text-cyan-700 px-2 py-1 rounded-full whitespace-nowrap">
+                    Featured
+                  </span>
                 </div>
                 <h3 className="font-semibold text-sm text-gray-900 leading-snug">{item.name}</h3>
                 <p className="text-xs text-gray-500 mt-1 line-clamp-3">{item.desc}</p>
                 <p className="text-xs text-gray-600 mt-2">{item.reviews}</p>
                 <div className="flex items-center gap-2 mt-3 text-xs">
-                  <span className={`w-2 h-2 rounded-full ${item.status === "Active" ? "bg-teal-500" : "bg-gray-400"}`} />
+                  <span
+                    className={`w-2 h-2 rounded-full ${
+                      item.status === "Active" ? "bg-teal-500" : "bg-gray-400"
+                    }`}
+                  />
                   <span className="text-gray-600">{item.status}</span>
                 </div>
               </div>
@@ -144,20 +161,14 @@ export default function FeaturedGrid() {
 
         {/* CTA Button */}
         <div className="flex justify-center mt-8 sm:mt-10 lg:mt-12">
-        <div className="flex justify-center mt-8 sm:mt-10 lg:mt-12">
-  <CustomButton
-    color="blue"
-    alertText="See All Featured Centers & Wellness Professionals clicked!"
-className="px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-semibold text-center text-white bg-gradient-to-r from-emerald-700 via-teal-600 to-blue-800 hover:from-emerald-800 hover:via-teal-700 hover:to-blue-900 shadow-lg"
-  >
-    See All Featured Centers & Wellness Professionals
-  </CustomButton>
-</div>
-
-
-
+          <CustomButton
+            color="blue"
+            alertText="See All Featured Centers & Wellness Professionals clicked!"
+            className="px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-semibold text-center text-white bg-gradient-to-r from-emerald-700 via-teal-600 to-blue-800 hover:from-emerald-800 hover:via-teal-700 hover:to-blue-900 shadow-lg"
+          >
+            See All Featured Centers & Wellness Professionals
+          </CustomButton>
         </div>
-
       </div>
     </section>
   );

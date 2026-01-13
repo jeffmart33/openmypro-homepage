@@ -1,9 +1,8 @@
 "use client";
+
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import CustomButton from "@/components/CustomButton";
-
-
 
 /* ---------------- TYPES ---------------- */
 type Slide = {
@@ -75,21 +74,15 @@ const slides: Slide[] = [
 export default function TopCarousel() {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const [mounted, setMounted] = useState(false);
-useEffect(() => setMounted(true), []);
-
   const [activeIndex, setActiveIndex] = useState(0);
   const [imgIndex, setImgIndex] = useState(0);
+
   const cardWidth = 336;
 
-  useEffect(() => {
-    if (!scrollRef.current) return;
-    const containerWidth = scrollRef.current.offsetWidth;
-    const scrollX =
-      activeIndex * cardWidth - containerWidth / 2 + cardWidth / 2;
+  // Mount effect for client-only rendering
+  useEffect(() => setMounted(true), []);
 
-    scrollRef.current.scrollTo({ left: scrollX, behavior: "smooth" });
-  }, [activeIndex]);
-
+  // Auto-scroll images
   useEffect(() => {
     const interval = setInterval(() => {
       setImgIndex((i) => (i + 1) % 3);
@@ -97,10 +90,18 @@ useEffect(() => setMounted(true), []);
     return () => clearInterval(interval);
   }, []);
 
+  // Scroll to active card
+  useEffect(() => {
+    if (!scrollRef.current) return;
+    const containerWidth = scrollRef.current.offsetWidth;
+    const scrollX = activeIndex * cardWidth - containerWidth / 2 + cardWidth / 2;
+    scrollRef.current.scrollTo({ left: scrollX, behavior: "smooth" });
+  }, [activeIndex]);
+
+  // Arrow click handler
   const handleArrow = (dir: "left" | "right") => {
     if (dir === "left" && activeIndex > 0) setActiveIndex(activeIndex - 1);
-    if (dir === "right" && activeIndex < slides.length - 1)
-      setActiveIndex(activeIndex + 1);
+    if (dir === "right" && activeIndex < slides.length - 1) setActiveIndex(activeIndex + 1);
   };
 
   return (
@@ -120,79 +121,69 @@ useEffect(() => setMounted(true), []);
 
         {/* Description */}
         <p className="text-center text-gray-600 mt-4 max-w-2xl mx-auto">
-          Experience unparalleled comfort and convenience with our curated
-          network of elite wellness professionals and premium care spaces.
+          Experience unparalleled comfort and convenience with our curated network of elite wellness professionals and premium care spaces.
         </p>
 
         {/* Carousel */}
         <div className="relative mt-12">
+          {/* Left Arrow */}
           <button
             onClick={() => handleArrow("left")}
             disabled={activeIndex === 0}
             className="absolute -left-5 top-1/2 -translate-y-1/2 z-10 bg-white w-10 h-10 rounded-full shadow flex items-center justify-center hover:scale-110 transition disabled:opacity-30"
-
           >
             ←
           </button>
 
+          {/* Carousel Cards */}
           <div
             ref={scrollRef}
             className="flex gap-4 overflow-x-hidden scroll-smooth px-2"
           >
-           {slides.map((slide, i) => {
-  let offset = 0;
-  if (i === 1) offset = 2;
-  if (i === 2) offset = 1;
+            {slides.map((slide, i) => {
+              let offset = 0;
+              if (i === 1) offset = 2;
+              if (i === 2) offset = 1;
 
-  return (
-    <Card
-      key={i}
-      slide={slide}
-      imgIndex={(imgIndex + offset) % 3}
-      mounted={mounted} // ← pass it here
-    />
-  );
-})}
-
+              return <Card key={i} slide={slide} imgIndex={(imgIndex + offset) % 3} mounted={mounted} />;
+            })}
           </div>
 
+          {/* Right Arrow */}
           <button
             onClick={() => handleArrow("right")}
             disabled={activeIndex === slides.length - 1}
             className="absolute -right-5 top-1/2 -translate-y-1/2 z-10 bg-white w-10 h-10 rounded-full shadow flex items-center justify-center hover:scale-110 transition disabled:opacity-30"
-
           >
             →
           </button>
         </div>
 
-        {/* CTA INSIDE CONTAINER */}
-       <div className="text-center mt-16">
-  <h3 className="text-xl font-medium text-gray-800 mb-6">
-    Ready to elevate your travel experience?
-  </h3>
-
-  {mounted && (
-    <CustomButton
-      color="blue"
-      alertText="Explore All Jets clicked!"
-      className="inline-flex items-center gap-3 px-10 py-5 rounded-2xl text-lg font-semibold shadow-lg bg-gradient-to-r from-cyan-500 to-blue-600"
-    >
-      ✈ Explore All Jets
-    </CustomButton>
-  )}
-
+        {/* CTA Button */}
+        <div className="text-center mt-16">
+          <h3 className="text-xl font-medium text-gray-800 mb-6">
+            Ready to elevate your travel experience?
+          </h3>
+          {mounted && (
+            <CustomButton
+              color="blue"
+              alertText="Explore All Jets clicked!"
+              className="inline-flex items-center gap-3 px-10 py-5 rounded-2xl text-lg font-semibold shadow-lg bg-gradient-to-r from-cyan-500 to-blue-600"
+            >
+              ✈ Explore All Jets
+            </CustomButton>
+          )}
         </div>
       </div>
     </section>
   );
 }
 
-/* ---------------- CARD ---------------- */
+/* ---------------- CARD COMPONENT ---------------- */
 function Card({
   slide,
   imgIndex,
-  mounted, // pass this from parent
+  mounted,
 }: {
   slide: Slide;
   imgIndex: number;
@@ -200,12 +191,10 @@ function Card({
 }) {
   return (
     <div
-  onClick={() => alert(`Card clicked for ${slide.name}`)}
-  className="w-[320px] flex-shrink-0 bg-white rounded-2xl overflow-hidden shadow-lg cursor-pointer hover:-translate-y-1 transition-transform"
->
-
-      
-      {/* IMAGE */}
+      onClick={() => alert(`Card clicked for ${slide.name}`)}
+      className="w-[320px] flex-shrink-0 bg-white rounded-2xl overflow-hidden shadow-lg cursor-pointer hover:-translate-y-1 transition-transform"
+    >
+      {/* Image */}
       <div className="relative h-56">
         {slide.images.map((img, i) => (
           <Image
@@ -213,69 +202,56 @@ function Card({
             src={img}
             alt={slide.name}
             fill
-            className={`object-cover transition-opacity duration-1000 ${
-              i === imgIndex ? "opacity-100" : "opacity-0"
-            }`}
+            className={`object-cover transition-opacity duration-1000 ${i === imgIndex ? "opacity-100" : "opacity-0"}`}
           />
         ))}
 
-        {/* AVAILABLE */}
+        {/* Available badge */}
         <div className="absolute bottom-1 right-4 bg-green-500 text-white text-xs px-4 py-1.5 rounded-full shadow">
           ● AVAILABLE
         </div>
 
-        {/* OVERLAY */}
+        {/* Overlay */}
         <div className="absolute bottom-4 left-4 right-4 text-white">
           <h3 className="text-lg font-bold">{slide.name}</h3>
           <p className="text-sm opacity-90">{slide.subtitle}</p>
-
           <div className="flex justify-between text-xs mt-2 opacity-90">
             <span>✈ RANGE 7,700 nm</span>
             <span>📍 {slide.location}</span>
           </div>
-
           <div className="flex items-center gap-1 mt-2 text-yellow-400 text-sm">
             {"★★★★★"}
-            <span className="text-white text-xs ml-1">
-              ({slide.reviews})
-            </span>
+            <span className="text-white text-xs ml-1">({slide.reviews})</span>
           </div>
         </div>
 
-        {/* DOTS */}
+        {/* Dots */}
         <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
           {slide.images.map((_, i) => (
-            <span
-              key={i}
-              className={`w-2 h-2 rounded-full ${
-                i === imgIndex ? "bg-white" : "bg-white/40"
-              }`}
-            />
+            <span key={i} className={`w-2 h-2 rounded-full ${i === imgIndex ? "bg-white" : "bg-white/40"}`} />
           ))}
         </div>
       </div>
 
-      {/* INFO */}
+      {/* Info */}
       <div className="p-4 space-y-2">
         <div className="flex justify-between text-sm text-gray-600">
           <span>🔓 Unlock</span>
           <strong className="text-gray-900">{slide.unlock}</strong>
         </div>
-
         <div className="flex justify-between text-sm text-gray-600">
           <span>💳 Rent</span>
           <strong className="text-gray-900">{slide.rent}</strong>
         </div>
 
-        {/* Only CustomButton is conditional */}
+        {/* Book Now button */}
         {mounted && (
           <CustomButton
-  color="blue"
-  alertText={`Book Now clicked for ${slide.name}`}
-  onClick={(e) => e.stopPropagation()}
-  className="mt-4 w-full py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-500"
->
-
+            color="blue"
+            alertText={`Book Now clicked for ${slide.name}`}
+            onClick={(e) => e.stopPropagation()}
+            className="mt-4 w-full py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-500"
+          >
             📅 Book Now →
           </CustomButton>
         )}

@@ -3,6 +3,8 @@
 import { useRef } from "react";
 import Image from "next/image";
 import CustomButton from "@/components/CustomButton"; // adjust path if needed
+import Link from "next/link";
+
 
 
 const pros = [
@@ -94,52 +96,54 @@ export default function ProCarousel() {
             className="flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth no-scrollbar px-4 sm:px-12 snap-x snap-mandatory"
           >
             {pros.map((pro, index) => (
-              <div
-  key={index}
-  onClick={() => alert(`Card clicked for ${pro.name}`)}
-  className="w-64 sm:w-72 md:w-80 lg:w-72 flex-shrink-0 relative rounded-2xl shadow-xl cursor-pointer hover:translate-y-[-2px] transition-all duration-300 snap-start overflow-hidden"
->
+  <Link
+    key={index}
+    href={`/pros/${encodeURIComponent(pro.name)}`}
+    className="block w-64 sm:w-72 md:w-80 lg:w-72 flex-shrink-0 snap-start"
+  >
+    <div className="relative rounded-2xl shadow-xl cursor-pointer hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+      
+      {/* Card image container */}
+      <div className="relative h-64 w-full">
+        <Image
+          src={pro.image}
+          alt={pro.name}
+          fill
+          className="object-cover rounded-2xl"
+        />
 
-                {/* Card image container */}
-                <div className="relative h-64 w-full">
-                  <Image
-                    src={pro.image}
-                    alt={pro.name}
-                    fill
-                    className="object-cover rounded-2xl"
-                  />
+        {/* Overlay content */}
+        <div className="absolute inset-0 bg-black/30 p-4 flex flex-col justify-end rounded-2xl">
+          <h3 className="font-semibold text-lg text-white">
+            {pro.name}
+          </h3>
+          <p className="text-sm text-gray-200">
+            {pro.location}
+          </p>
 
-                  {/* Overlay content */}
-                  <div className="absolute inset-0 bg-black/30 p-4 flex flex-col justify-end rounded-2xl">
-                    <h3 className="font-semibold text-lg text-white">
-                      {pro.name}
-                    </h3>
-                    <p className="text-sm text-gray-200">
-                      {pro.location}
-                    </p>
-                    <div className="flex justify-between items-center mt-2 text-sm text-white">
-                      <span>{pro.price}</span>
-                      <span className="text-yellow-400">
-                        ★ {pro.rating}
-                      </span>
-                    </div>
-
-                    <CustomButton
-  color="blue"
-  alertText={`Book Now clicked for ${pro.name}`} // ✅ FIXED
-  onClick={(e) => e.stopPropagation()}
-  className="mt-4 w-full py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-500"
->
-
-  Instant Book
-</CustomButton>
-
-
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="flex justify-between items-center mt-2 text-sm text-white">
+            <span>{pro.price}</span>
+            <span className="text-yellow-400">★ {pro.rating}</span>
           </div>
+
+          <CustomButton
+            color="blue"
+            alertText={`Book Now clicked for ${pro.name}`}
+            onClick={(e) => e.stopPropagation()}
+            className="mt-4 w-full py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-500"
+          >
+            Instant Book
+          </CustomButton>
+        </div>
+      </div>
+
+    </div>
+  </Link>
+))}
+
+
+
+                        </div>
         </div>
 
         {/* Featured Heading */}
